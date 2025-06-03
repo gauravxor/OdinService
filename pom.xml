@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.clumsycoder</groupId>
-    <artifactId>OdinService</artifactId>
+    <artifactId>odin-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>OdinService</name>
     <description>OdinService</description>
