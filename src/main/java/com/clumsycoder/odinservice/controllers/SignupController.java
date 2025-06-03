@@ -24,7 +24,6 @@ public class SignupController {
     private final SignupService signupService;
     private final FeignExceptionHandler feignExceptionHandler;
 
-
     @PostMapping("")
     public ResponseEntity<ApiResponse> signup(@Valid @RequestBody PlayerSignupRequest request) {
         try {

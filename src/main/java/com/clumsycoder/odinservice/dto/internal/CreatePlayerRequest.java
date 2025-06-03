@@ -1,14 +1,11 @@
-package com.clumsycoder.odinservice.dto.common;
+package com.clumsycoder.odinservice.dto.internal;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
-public class Player {
-    private String id;
+public class CreatePlayerRequest {
     private String email;
     private String username;
     private String firstName;

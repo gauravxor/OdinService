@@ -1,6 +1,6 @@
 package com.clumsycoder.odinservice.services;
 
-import com.clumsycoder.odinservice.clients.PlayerServiceClient;
+import com.clumsycoder.odinservice.clients.NucleusServiceClient;
 import com.clumsycoder.odinservice.dto.request.PlayerUpdateRequest;
 import com.clumsycoder.odinservice.models.OtpEntity;
 import com.clumsycoder.odinservice.repositories.OtpRepository;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class OtpService {
     private final OtpRepository otpRepository;
     private final EmailService emailService;
-    private final PlayerServiceClient playerServiceClient;
+    private final NucleusServiceClient nucleusServiceClient;
     private final FeignExceptionHandler feignExceptionHandler;
 
     private String createAndSaveOtp(String email, String playerId, OtpPurpose otpPurpose) {
@@ -71,7 +71,7 @@ public class OtpService {
         player.setIsEmailVerified(true);
 
         try {
-            playerServiceClient.updatePlayer(playerId, player);
+            nucleusServiceClient.updatePlayer(playerId, player);
             otpRepository.delete(otpEntity);
             return true;
         } catch (FeignException e) {

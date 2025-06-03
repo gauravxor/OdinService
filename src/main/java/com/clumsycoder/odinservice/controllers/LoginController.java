@@ -28,7 +28,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody PlayerLoginRequest request) {
-        logger.info("We have a login request for {}", request.getEmail());
+
         Player player = loginService.login(request);
 
         String accessToken = jwtService.createAccessToken(player);

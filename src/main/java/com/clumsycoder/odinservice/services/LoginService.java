@@ -1,6 +1,6 @@
 package com.clumsycoder.odinservice.services;
 
-import com.clumsycoder.odinservice.clients.PlayerServiceClient;
+import com.clumsycoder.odinservice.clients.NucleusServiceClient;
 import com.clumsycoder.odinservice.dto.common.Player;
 import com.clumsycoder.odinservice.dto.internal.PlayerAuthResponse;
 import com.clumsycoder.odinservice.dto.request.PlayerLoginRequest;
@@ -14,24 +14,25 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class LoginService {
-    private final PlayerServiceClient playerServiceClient;
+    private final NucleusServiceClient nucleusServiceClient;
     private final PasswordEncoder passwordEncoder;
     private final FeignExceptionHandler feignExceptionHandler;
 
     public Player login(PlayerLoginRequest request) {
         try {
 
-            PlayerAuthResponse playerAuth = playerServiceClient.getPlayerAuthDataByEmail(request.getEmail());
+            // this would return the
+            PlayerAuthResponse playerAuth = nucleusServiceClient.getPlayerAuthDataByEmail(request.getEmail());
 
             String rawPassword = request.getPassword();
             String encodedPassword = playerAuth.getPassword();
 
             if (passwordEncoder.matches(rawPassword, encodedPassword)) {
-                return new Player(
-                        playerAuth.getEmail(),
-                        playerAuth.getId(),
-                        playerAuth.getIsEmailVerified()
-                );
+                return null;
+//                        playerAuth.getEmail(),
+//                        playerAuth.getId(), "true"
+////                        playerAuth.getIsEmailVerified()
+//                );
             }
             throw new UnauthorizedException("Invalid password provided");
 

@@ -11,12 +11,9 @@ public class PlayerLoginRequest {
 
     @Email(message = "Email must be a valid email address")
     @NotBlank(message = "Email is required")
-    @Size(max = 100, message = "Email must not exceed 100 characters")
-    @JsonProperty("email")
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 8, max = 128, message = "Password must be between 8 and 128 characters")
-    @JsonProperty("password")
+    @Size(min = 6, max = 30, message = "Password must be between 6 and 30 characters")
     private String password;
 }
