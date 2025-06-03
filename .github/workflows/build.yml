@@ -9,6 +9,10 @@ on:
 jobs:
   build-odin:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
+      GITHUB_ACTOR: ${{ github.actor }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -25,8 +29,21 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Configure Maven authentication
+        run: |
+          mkdir -p ~/.m2
+          echo "<settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${GITHUB_ACTOR}</username>
+                <password>${GITHUB_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>" > ~/.m2/settings.xml
+
       - name: Make Maven wrapper executable
         run: chmod +x ./mvnw
 
       - name: Build OdinService
-        run: ./mvnw clean package
+        run: ./mvnw clean package --settings ~/.m2/settings.xml
