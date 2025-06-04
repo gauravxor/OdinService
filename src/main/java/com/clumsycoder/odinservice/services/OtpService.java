@@ -3,7 +3,9 @@ package com.clumsycoder.odinservice.services;
 import com.clumsycoder.odinservice.clients.NucleusServiceClient;
 import com.clumsycoder.odinservice.dto.request.UpdateRequest;
 import com.clumsycoder.odinservice.models.OtpEntity;
+import com.clumsycoder.odinservice.models.PlayerAuth;
 import com.clumsycoder.odinservice.repositories.OtpRepository;
+import com.clumsycoder.odinservice.repositories.PlayerAuthRepository;
 import com.clumsycoder.odinservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.email.EmailService;
 import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
@@ -24,6 +26,7 @@ public class OtpService {
     private final EmailService emailService;
     private final NucleusServiceClient nucleusServiceClient;
     private final FeignExceptionHandler feignExceptionHandler;
+    private final PlayerAuthRepository playerAuthRepository;
 
     private String createAndSaveOtp(String email, String playerId, OtpPurpose otpPurpose) {
 
@@ -31,15 +34,16 @@ public class OtpService {
         String otpCode = OtpGenerator.generate(OtpType.ALPHANUMERIC);
         LocalDateTime currentTimeStamp = LocalDateTime.now();
 
+        PlayerAuth player = playerAuthRepository.getReferenceByEmail(email);
+
         otpEntity.setOtpCode(otpCode);
         otpEntity.setPurpose(otpPurpose);
-        otpEntity.setPlayerId(playerId);
+        otpEntity.setPlayer(player);
         otpEntity.setCreatedAt(currentTimeStamp);
         otpEntity.setExpiresAt(currentTimeStamp.plusSeconds(otpPurpose.getExpirySeconds()));
 
         otpRepository.save(otpEntity);
         return otpCode;
-
     }
 
     @Transactional
@@ -57,7 +61,7 @@ public class OtpService {
 
     @Transactional
     public boolean validateEmailVerificationOtp(String playerId, String otpCode) {
-        Optional<OtpEntity> otpEntityOpt = otpRepository.findByPlayerIdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
+        Optional<OtpEntity> otpEntityOpt = otpRepository.findByPlayer_PlayerIdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
                 playerId, otpCode, LocalDateTime.now()
         );
 

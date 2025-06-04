@@ -8,6 +8,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +28,9 @@ public class OtpEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "player_id", nullable = false)
-    private String playerId;
+    @ManyToOne
+    @JoinColumn(name = "player_id", referencedColumnName = "player_id", nullable = false)
+    private PlayerAuth player;
 
     @Column(nullable = false)
     private String otpCode;

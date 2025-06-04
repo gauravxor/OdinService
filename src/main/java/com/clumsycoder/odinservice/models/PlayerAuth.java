@@ -1,6 +1,5 @@
 package com.clumsycoder.odinservice.models;
 
-import com.clumsycoder.controlshift.commons.generators.Cuid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,9 +15,7 @@ import java.time.Instant;
 @Data
 public class PlayerAuth {
     @Id
-    private String id;
-
-    @Column
+    @Column(name = "player_id")
     private String playerId;
 
     @Column
@@ -39,7 +36,6 @@ public class PlayerAuth {
     @PrePersist
     public void prePersist() {
         Instant currentTime = Instant.now();
-        if (this.id == null) this.id = Cuid.getCuid();
         if (this.createdAt == null) this.createdAt = currentTime;
         if (this.updatedAt == null) this.updatedAt = currentTime;
     }
