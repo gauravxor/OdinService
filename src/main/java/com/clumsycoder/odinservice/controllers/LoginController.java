@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -28,10 +25,13 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
+        String email = request.getEmail();
+        logger.info("Login attempt received for email: {}", email);
 
         Player player = loginService.login(request);
-
         String accessToken = jwtService.createAccessToken(player);
+
+        logger.info("Login successful for userId: {}", player.getId());
 
         ApiResponse response = new ApiResponse()
                 .message("Logged in successfully")
