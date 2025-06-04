@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.clumsycoder</groupId>
             <artifactId>controlshift-commons</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

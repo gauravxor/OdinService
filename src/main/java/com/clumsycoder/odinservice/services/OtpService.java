@@ -1,6 +1,6 @@
 package com.clumsycoder.odinservice.services;
 
-import com.clumsycoder.controlshift.commons.exceptions.InvalidOtpException;
+import com.clumsycoder.controlshift.commons.exceptions.OtpException;
 import com.clumsycoder.odinservice.dto.request.ValidateOtpRequest;
 import com.clumsycoder.odinservice.models.OtpEntity;
 import com.clumsycoder.odinservice.models.PlayerAuth;
@@ -61,7 +61,7 @@ public class OtpService {
         );
 
         if (!otpEntity.getOtpCode().equals(request.getOtpCode())) {
-            throw new InvalidOtpException("Invalid OTP.");
+            throw new OtpException("Invalid OTP.");
         }
 
         PlayerAuth playerAuth = otpEntity.getPlayer();

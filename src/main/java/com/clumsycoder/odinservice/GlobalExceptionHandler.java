@@ -1,7 +1,7 @@
 package com.clumsycoder.odinservice;
 
 import com.clumsycoder.controlshift.commons.exceptions.DuplicateResourceException;
-import com.clumsycoder.controlshift.commons.exceptions.InvalidOtpException;
+import com.clumsycoder.controlshift.commons.exceptions.OtpException;
 import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
 import com.clumsycoder.controlshift.commons.exceptions.UnauthorizedException;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
@@ -32,8 +32,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ApiResponse().message(e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(InvalidOtpException.class)
-    public ResponseEntity<ApiResponse> handleInvalidOtp(InvalidOtpException e) {
+    @ExceptionHandler(OtpException.class)
+    public ResponseEntity<ApiResponse> handleInvalidOtp(OtpException e) {
         return new ResponseEntity<>(new ApiResponse().message(e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 

@@ -4,7 +4,7 @@ import com.clumsycoder.odinservice.dto.request.GenerateOtpRequest;
 import com.clumsycoder.odinservice.dto.request.ValidateOtpRequest;
 import com.clumsycoder.odinservice.services.OtpService;
 import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
-import com.clumsycoder.controlshift.commons.exceptions.InvalidOtpException;
+import com.clumsycoder.controlshift.commons.exceptions.OtpException;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -43,7 +43,7 @@ public class OtpController {
         OtpPurpose otpType = request.getOtpType();
         switch (otpType) {
             case OtpPurpose.EMAIL_VERIFICATION -> otpService.sendEmailVerificationOtp("test@test.com", "123123");
-            default -> throw new InvalidOtpException("Invalid OTP type received " + otpType);
+            default -> throw new OtpException("Invalid OTP type received " + otpType);
         }
 
         ApiResponse apiResponse = new ApiResponse();
