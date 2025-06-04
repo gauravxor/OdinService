@@ -1,6 +1,6 @@
 package com.clumsycoder.odinservice.controllers;
 
-import com.clumsycoder.odinservice.dto.common.Player;
+import com.clumsycoder.odinservice.dto.Player;
 import com.clumsycoder.odinservice.dto.request.LoginRequest;
 import com.clumsycoder.odinservice.services.JwtService;
 import com.clumsycoder.odinservice.services.LoginService;

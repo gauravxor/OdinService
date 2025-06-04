@@ -1,6 +1,6 @@
 package com.clumsycoder.odinservice.services;
 
-import com.clumsycoder.odinservice.dto.common.Player;
+import com.clumsycoder.odinservice.dto.Player;
 import com.clumsycoder.controlshift.commons.security.Jwt;
 import org.springframework.stereotype.Service;
 

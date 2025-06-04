@@ -1,9 +1,9 @@
 package com.clumsycoder.odinservice.services;
 
 import com.clumsycoder.odinservice.clients.NucleusServiceClient;
-import com.clumsycoder.odinservice.dto.common.Player;
+import com.clumsycoder.odinservice.dto.Player;
 import com.clumsycoder.odinservice.dto.internal.CreatePlayerRequest;
-import com.clumsycoder.odinservice.dto.request.PlayerSignupRequest;
+import com.clumsycoder.odinservice.dto.request.SignupRequest;
 import com.clumsycoder.odinservice.models.PlayerAuth;
 import com.clumsycoder.odinservice.repositories.PlayerAuthRepository;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class  SignupService {
     private final PlayerAuthRepository playerAuthRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Player createPlayer(PlayerSignupRequest request) {
+    public Player createPlayer(SignupRequest request) {
         CreatePlayerRequest  userServiceRequest = new CreatePlayerRequest();
         userServiceRequest.setEmail(request.getEmail());
         userServiceRequest.setFirstName(request.getFirstName());

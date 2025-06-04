@@ -1,7 +1,7 @@
 package com.clumsycoder.odinservice.controllers;
 
-import com.clumsycoder.odinservice.dto.common.Player;
-import com.clumsycoder.odinservice.dto.request.PlayerSignupRequest;
+import com.clumsycoder.odinservice.dto.Player;
+import com.clumsycoder.odinservice.dto.request.SignupRequest;
 import com.clumsycoder.odinservice.services.SignupService;
 import com.clumsycoder.odinservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
@@ -25,7 +25,7 @@ public class SignupController {
     private final FeignExceptionHandler feignExceptionHandler;
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> signup(@Valid @RequestBody PlayerSignupRequest request) {
+    public ResponseEntity<ApiResponse> signup(@Valid @RequestBody SignupRequest request) {
         try {
             Player newPlayer = signupService.createPlayer(request);
             ApiResponse response = new ApiResponse()

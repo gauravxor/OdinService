@@ -1,9 +1,8 @@
 package com.clumsycoder.odinservice.clients;
 
-import com.clumsycoder.odinservice.dto.common.Player;
+import com.clumsycoder.odinservice.dto.Player;
 import com.clumsycoder.odinservice.dto.internal.CreatePlayerRequest;
-import com.clumsycoder.odinservice.dto.internal.PlayerAuthResponse;
-import com.clumsycoder.odinservice.dto.request.PlayerUpdateRequest;
+import com.clumsycoder.odinservice.dto.request.UpdateRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,12 +16,9 @@ public interface NucleusServiceClient {
     @GetMapping("/api/player/{id}")
     Player getPlayerById(@PathVariable("id") String id);
 
-    @GetMapping("/api/player/{id}/auth")
-    PlayerAuthResponse getPlayerAuthDataByEmail(@PathVariable("id") String id);
-
     @PostMapping("/api/player")
     Player createPlayer(@RequestBody CreatePlayerRequest request);
 
     @PatchMapping("/api/player/{id}")
-    Player updatePlayer(@PathVariable("id") String id, @RequestBody PlayerUpdateRequest player);
+    Player updatePlayer(@PathVariable("id") String id, @RequestBody UpdateRequest player);
 }

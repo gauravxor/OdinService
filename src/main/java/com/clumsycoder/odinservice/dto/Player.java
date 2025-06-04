@@ -1,4 +1,4 @@
-package com.clumsycoder.odinservice.dto.common;
+package com.clumsycoder.odinservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

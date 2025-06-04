@@ -9,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class PlayerSignupRequest {
+public class SignupRequest {
 
     @Email(message = "Email must be a valid email address")
     @NotBlank(message = "Email is required")

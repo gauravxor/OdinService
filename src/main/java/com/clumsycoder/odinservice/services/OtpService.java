@@ -1,7 +1,7 @@
 package com.clumsycoder.odinservice.services;
 
 import com.clumsycoder.odinservice.clients.NucleusServiceClient;
-import com.clumsycoder.odinservice.dto.request.PlayerUpdateRequest;
+import com.clumsycoder.odinservice.dto.request.UpdateRequest;
 import com.clumsycoder.odinservice.models.OtpEntity;
 import com.clumsycoder.odinservice.repositories.OtpRepository;
 import com.clumsycoder.odinservice.services.exceptions.FeignExceptionHandler;
@@ -67,7 +67,7 @@ public class OtpService {
 
         OtpEntity otpEntity = otpEntityOpt.get();
 
-        PlayerUpdateRequest player = new PlayerUpdateRequest();
+        UpdateRequest player = new UpdateRequest();
         player.setIsEmailVerified(true);
 
         try {

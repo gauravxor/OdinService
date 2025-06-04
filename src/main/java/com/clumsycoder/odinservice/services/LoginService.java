@@ -2,8 +2,7 @@ package com.clumsycoder.odinservice.services;
 
 import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
 import com.clumsycoder.odinservice.clients.NucleusServiceClient;
-import com.clumsycoder.odinservice.dto.common.Player;
-import com.clumsycoder.odinservice.dto.internal.PlayerAuthResponse;
+import com.clumsycoder.odinservice.dto.Player;
 import com.clumsycoder.odinservice.dto.request.LoginRequest;
 import com.clumsycoder.odinservice.models.PlayerAuth;
 import com.clumsycoder.odinservice.repositories.PlayerAuthRepository;
