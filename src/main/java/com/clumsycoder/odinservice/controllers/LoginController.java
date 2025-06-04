@@ -1,7 +1,7 @@
 package com.clumsycoder.odinservice.controllers;
 
 import com.clumsycoder.odinservice.dto.common.Player;
-import com.clumsycoder.odinservice.dto.request.PlayerLoginRequest;
+import com.clumsycoder.odinservice.dto.request.LoginRequest;
 import com.clumsycoder.odinservice.services.JwtService;
 import com.clumsycoder.odinservice.services.LoginService;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
@@ -27,7 +27,7 @@ public class LoginController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@Valid @RequestBody PlayerLoginRequest request) {
+    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
 
         Player player = loginService.login(request);
 
