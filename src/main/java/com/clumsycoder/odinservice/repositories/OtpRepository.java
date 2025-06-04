@@ -1,5 +1,6 @@
 package com.clumsycoder.odinservice.repositories;
 
+import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
 import com.clumsycoder.odinservice.models.OtpEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,6 +12,10 @@ public interface OtpRepository extends JpaRepository<OtpEntity, Long> {
             String playerId,
             String otpCode,
             LocalDateTime currentTime
+    );
+
+    OtpEntity findByPlayer_PlayerIdAndPurpose(
+            String playerId, OtpPurpose purpose
     );
 
 }

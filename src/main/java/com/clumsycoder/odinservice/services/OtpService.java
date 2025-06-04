@@ -1,31 +1,26 @@
 package com.clumsycoder.odinservice.services;
 
-import com.clumsycoder.odinservice.clients.NucleusServiceClient;
-import com.clumsycoder.odinservice.dto.request.UpdateRequest;
+import com.clumsycoder.controlshift.commons.exceptions.InvalidOtpException;
+import com.clumsycoder.odinservice.dto.request.ValidateOtpRequest;
 import com.clumsycoder.odinservice.models.OtpEntity;
 import com.clumsycoder.odinservice.models.PlayerAuth;
 import com.clumsycoder.odinservice.repositories.OtpRepository;
 import com.clumsycoder.odinservice.repositories.PlayerAuthRepository;
-import com.clumsycoder.odinservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.email.EmailService;
 import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
 import com.clumsycoder.controlshift.commons.enums.OtpType;
 import com.clumsycoder.controlshift.commons.generators.OtpGenerator;
-import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class OtpService {
     private final OtpRepository otpRepository;
     private final EmailService emailService;
-    private final NucleusServiceClient nucleusServiceClient;
-    private final FeignExceptionHandler feignExceptionHandler;
     private final PlayerAuthRepository playerAuthRepository;
 
     private String createAndSaveOtp(String email, String playerId, OtpPurpose otpPurpose) {
@@ -60,26 +55,20 @@ public class OtpService {
     }
 
     @Transactional
-    public boolean validateEmailVerificationOtp(String playerId, String otpCode) {
-        Optional<OtpEntity> otpEntityOpt = otpRepository.findByPlayer_PlayerIdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
-                playerId, otpCode, LocalDateTime.now()
+    public boolean validateEmailVerificationOtp(ValidateOtpRequest request) {
+        OtpEntity otpEntity = otpRepository.findByPlayer_PlayerIdAndPurpose(
+                request.getPlayerId(), OtpPurpose.EMAIL_VERIFICATION
         );
 
-        if (otpEntityOpt.isEmpty()) {
-            return false;
+        if (!otpEntity.getOtpCode().equals(request.getOtpCode())) {
+            throw new InvalidOtpException("Invalid OTP.");
         }
 
-        OtpEntity otpEntity = otpEntityOpt.get();
+        PlayerAuth playerAuth = otpEntity.getPlayer();
+        playerAuth.setIsEmailVerified(true);
+        playerAuthRepository.save(playerAuth);
 
-        UpdateRequest player = new UpdateRequest();
-        player.setIsEmailVerified(true);
-
-        try {
-            nucleusServiceClient.updatePlayer(playerId, player);
-            otpRepository.delete(otpEntity);
-            return true;
-        } catch (FeignException e) {
-            throw feignExceptionHandler.handle(e);
-        }
+        otpRepository.delete(otpEntity);
+        return true;
     }
 }

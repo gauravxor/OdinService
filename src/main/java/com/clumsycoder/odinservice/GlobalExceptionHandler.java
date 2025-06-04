@@ -1,6 +1,7 @@
 package com.clumsycoder.odinservice;
 
 import com.clumsycoder.controlshift.commons.exceptions.DuplicateResourceException;
+import com.clumsycoder.controlshift.commons.exceptions.InvalidOtpException;
 import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
 import com.clumsycoder.controlshift.commons.exceptions.UnauthorizedException;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
@@ -31,6 +32,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ApiResponse().message(e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(InvalidOtpException.class)
+    public ResponseEntity<ApiResponse> handleInvalidOtp(InvalidOtpException e) {
+        return new ResponseEntity<>(new ApiResponse().message(e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handleValidationExceptions(MethodArgumentNotValidException e) {
         Map<String, Object> errors = new HashMap<>();
@@ -40,9 +46,7 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         ApiResponse apiResponse = new ApiResponse();
-        apiResponse
-                .message("Validation failed")
-                .errors(errors);
+        apiResponse.message("Validation failed").errors(errors);
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 }
