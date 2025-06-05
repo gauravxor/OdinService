@@ -1,6 +1,7 @@
 package com.clumsycoder.odinservice.services;
 
 import com.clumsycoder.controlshift.commons.exceptions.OtpException;
+import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
 import com.clumsycoder.odinservice.dto.request.ValidateOtpRequest;
 import com.clumsycoder.odinservice.models.OtpEntity;
 import com.clumsycoder.odinservice.models.PlayerAuth;
@@ -29,7 +30,9 @@ public class OtpService {
         String otpCode = OtpGenerator.generate(OtpType.ALPHANUMERIC);
         LocalDateTime currentTimeStamp = LocalDateTime.now();
 
-        PlayerAuth player = playerAuthRepository.getReferenceByEmail(email);
+        PlayerAuth player = playerAuthRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Player does not exist."));
 
         otpEntity.setOtpCode(otpCode);
         otpEntity.setPurpose(otpPurpose);

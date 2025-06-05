@@ -24,8 +24,7 @@ public class OtpController {
 
     @PostMapping("/verify-email")
     public ResponseEntity<ApiResponse> verifyEmail(@Valid @RequestBody ValidateOtpRequest request) {
-        String playerId = request.getPlayerId();
-        String otpCode = request.getOtpCode();
+
         boolean isVerified = otpService.validateEmailVerificationOtp(request);
 
         ApiResponse apiResponse = new ApiResponse();
