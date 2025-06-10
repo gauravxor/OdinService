@@ -1,12 +1,12 @@
 package com.clumsycoder.odinservice.controllers;
 
+import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
+import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import com.clumsycoder.controlshift.commons.response.ApiResult;
 import com.clumsycoder.odinservice.dto.request.GenerateOtpRequest;
 import com.clumsycoder.odinservice.dto.request.ValidateOtpRequest;
 import com.clumsycoder.odinservice.exception.OtpException;
 import com.clumsycoder.odinservice.services.OtpService;
-import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
-import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,10 @@ public class OtpController {
     public ResponseEntity<ApiResult> verifyEmail(@Valid @RequestBody ValidateOtpRequest request) {
         otpService.validateEmailVerificationOtp(request);
         return new ResponseEntity<>(
-                new ApiResult().message("Email verified successfully"), HttpStatus.OK
+                new ApiResult()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Email verified successfully"),
+                HttpStatus.OK
         );
     }
 
@@ -41,7 +44,9 @@ public class OtpController {
         }
 
         return new ResponseEntity<>(
-                new ApiResult().message("OTP sent successfully"),
+                new ApiResult()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("OTP sent successfully"),
                 HttpStatus.OK
         );
     }

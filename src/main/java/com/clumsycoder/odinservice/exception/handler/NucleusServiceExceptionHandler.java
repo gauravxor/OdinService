@@ -30,7 +30,10 @@ public class NucleusServiceExceptionHandler {
     @ExceptionHandler(UsernameAlreadyUsedException.class)
     public ResponseEntity<ApiError> handleUsernameAlreadyUsedException(UsernameAlreadyUsedException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.USERNAME_CONFLICT.name()),
+                new ApiError()
+                        .message(e.getMessage())
+                        .statusCode(HttpStatus.CONFLICT.value())
+                        .errorCode(ErrorCode.USERNAME_CONFLICT.name()),
                 HttpStatus.CONFLICT
         );
     }
@@ -38,7 +41,10 @@ public class NucleusServiceExceptionHandler {
     @ExceptionHandler(NucleusValidationException.class)
     public ResponseEntity<ApiError> handleNucleusValidationException(NucleusValidationException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.VALIDATION_ERROR.name()),
+                new ApiError()
+                        .message(e.getMessage())
+                        .statusCode(HttpStatus.CONFLICT.value())
+                        .errorCode(ErrorCode.VALIDATION_ERROR.name()),
                 HttpStatus.BAD_REQUEST
         );
     }
@@ -46,7 +52,10 @@ public class NucleusServiceExceptionHandler {
     @ExceptionHandler(UserCreateFailedException.class)
     public ResponseEntity<ApiError> handleUserCreateFailed(UserCreateFailedException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.USER_CREATE_FAILED.name()),
+                new ApiError()
+                        .message(e.getMessage())
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .errorCode(ErrorCode.USER_CREATE_FAILED.name()),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
@@ -54,7 +63,10 @@ public class NucleusServiceExceptionHandler {
     @ExceptionHandler(UserUpdateFailedException.class)
     public ResponseEntity<ApiError> handleUserUpdateFailedException(UserUpdateFailedException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.USER_UPDATE_FAILED.name()),
+                new ApiError()
+                        .message(e.getMessage())
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .errorCode(ErrorCode.USER_UPDATE_FAILED.name()),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
@@ -62,7 +74,10 @@ public class NucleusServiceExceptionHandler {
     @ExceptionHandler(UserDeleteFailedException.class)
     public ResponseEntity<ApiError> handleUserDeleteFailedException(UserDeleteFailedException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.USER_DELETE_FAILED.name()),
+                new ApiError()
+                        .message(e.getMessage())
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .errorCode(ErrorCode.USER_DELETE_FAILED.name()),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
@@ -70,7 +85,10 @@ public class NucleusServiceExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.USER_NOT_FOUND.name()),
+                new ApiError()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .message(e.getMessage())
+                        .errorCode(ErrorCode.USER_NOT_FOUND.name()),
                 HttpStatus.NOT_FOUND
         );
     }
@@ -79,7 +97,10 @@ public class NucleusServiceExceptionHandler {
     @ExceptionHandler(NucleusServiceException.class)
     public ResponseEntity<ApiResponse> handleNucleusServiceException(NucleusServiceException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.INTERNAL_ERROR.name()),
+                new ApiError()
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message(e.getMessage())
+                        .errorCode(ErrorCode.INTERNAL_ERROR.name()),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

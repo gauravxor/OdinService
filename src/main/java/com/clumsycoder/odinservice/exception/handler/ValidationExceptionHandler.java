@@ -1,5 +1,6 @@
 package com.clumsycoder.odinservice.exception.handler;
 
+import com.clumsycoder.controlshift.commons.odinservice.ErrorCode;
 import com.clumsycoder.controlshift.commons.response.ApiError;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,11 @@ public class ValidationExceptionHandler {
         });
 
         return new ResponseEntity<>(
-                new ApiError().message("Validation failed").errors(errors),
+                new ApiError()
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .message("Validation failed")
+                        .errorCode(ErrorCode.VALIDATION_ERROR.name())
+                        .errors(errors),
                 HttpStatus.BAD_REQUEST
         );
     }
