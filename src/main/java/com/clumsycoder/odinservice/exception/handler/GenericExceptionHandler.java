@@ -1,5 +1,6 @@
 package com.clumsycoder.odinservice.exception.handler;
 
+import com.clumsycoder.controlshift.commons.odinservice.ErrorCode;
 import com.clumsycoder.controlshift.commons.response.ApiError;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,10 @@ public class GenericExceptionHandler {
     @ExceptionHandler(exception = RuntimeException.class)
     public ResponseEntity<ApiResponse> handleRuntimeException(RuntimeException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()),
+                new ApiError()
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message(e.getMessage())
+                        .errorCode(ErrorCode.INTERNAL_ERROR.name()),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
@@ -20,7 +24,10 @@ public class GenericExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleGenericException(Exception e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()),
+                new ApiError()
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message(e.getMessage())
+                        .errorCode(ErrorCode.INTERNAL_ERROR.name()),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }

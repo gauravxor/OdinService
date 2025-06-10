@@ -15,7 +15,10 @@ public class OdinServiceExceptionHandler {
     @ExceptionHandler(OtpException.class)
     public ResponseEntity<ApiError> handleOtpException(OtpException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.OTP_ERROR.name()),
+                new ApiError()
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .message(e.getMessage())
+                        .errorCode(ErrorCode.OTP_ERROR.name()),
                 HttpStatus.BAD_REQUEST
         );
     }
@@ -23,7 +26,11 @@ public class OdinServiceExceptionHandler {
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<ApiError> handleJwtException(JwtException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.JWT_ERROR.name()),
+                new ApiError()
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .message(e.getMessage())
+                        .errorCode(ErrorCode.JWT_ERROR.name()),
+
                 HttpStatus.BAD_REQUEST
         );
     }
@@ -31,7 +38,10 @@ public class OdinServiceExceptionHandler {
     @ExceptionHandler(OdinServiceException.class)
     public ResponseEntity<ApiError> handleOdinServiceException(OdinServiceException e) {
         return new ResponseEntity<>(
-                new ApiError().message(e.getMessage()).errorCode(ErrorCode.INTERNAL_ERROR.name()),
+                new ApiError()
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message(e.getMessage())
+                        .errorCode(ErrorCode.INTERNAL_ERROR.name()),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
