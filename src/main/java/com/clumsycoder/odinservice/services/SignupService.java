@@ -43,7 +43,7 @@ public class SignupService {
         } catch (DataIntegrityViolationException e) {
             throw new OdinServiceException("Email already registered", e);
         } catch (DataAccessException e) {
-            throw new OdinServiceException("Unexpected error signing up the user");
+            throw new OdinServiceException("Unexpected error signing up the user.");
         }
 
         otpService.sendEmailVerificationOtp(newPlayer.getEmail(), newPlayer.getId());
