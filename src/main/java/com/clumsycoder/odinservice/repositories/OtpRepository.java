@@ -8,12 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface OtpRepository extends JpaRepository<OtpEntity, Long> {
-    Optional<OtpEntity> findByPlayer_PlayerIdAndOtpCodeAndUsedFalseAndExpiresAtAfter(
-            String playerId,
-            String otpCode,
-            LocalDateTime currentTime
-    );
-
     OtpEntity findByPlayer_PlayerIdAndPurpose(
             String playerId, OtpPurpose purpose
     );

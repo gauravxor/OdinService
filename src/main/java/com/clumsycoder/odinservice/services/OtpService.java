@@ -1,8 +1,7 @@
 package com.clumsycoder.odinservice.services;
 
-import com.clumsycoder.controlshift.commons.exceptions.OtpException;
-import com.clumsycoder.controlshift.commons.exceptions.ResourceNotFoundException;
 import com.clumsycoder.odinservice.dto.request.ValidateOtpRequest;
+import com.clumsycoder.odinservice.exception.OtpException;
 import com.clumsycoder.odinservice.models.OtpEntity;
 import com.clumsycoder.odinservice.models.PlayerAuth;
 import com.clumsycoder.odinservice.repositories.OtpRepository;
@@ -26,13 +25,13 @@ public class OtpService {
 
     private String createAndSaveOtp(String email, String playerId, OtpPurpose otpPurpose) {
 
+        PlayerAuth player = playerAuthRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new OtpException("Player does not exist to save the"));
+
         OtpEntity otpEntity = new OtpEntity();
         String otpCode = OtpGenerator.generate(OtpType.ALPHANUMERIC);
         LocalDateTime currentTimeStamp = LocalDateTime.now();
-
-        PlayerAuth player = playerAuthRepository
-                .findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Player does not exist."));
 
         otpEntity.setOtpCode(otpCode);
         otpEntity.setPurpose(otpPurpose);
@@ -41,6 +40,7 @@ public class OtpService {
         otpEntity.setExpiresAt(currentTimeStamp.plusSeconds(otpPurpose.getExpirySeconds()));
 
         otpRepository.save(otpEntity);
+
         return otpCode;
     }
 
@@ -53,17 +53,17 @@ public class OtpService {
         try {
             emailService.sendVerificationOtp(email, generatedOtp);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to send email otp");
+            throw new OtpException("Failed to send email otp");
         }
     }
 
     @Transactional
-    public boolean validateEmailVerificationOtp(ValidateOtpRequest request) {
+    public void validateEmailVerificationOtp(ValidateOtpRequest request) {
         OtpEntity otpEntity = otpRepository.findByPlayer_PlayerIdAndPurpose(
                 request.getPlayerId(), OtpPurpose.EMAIL_VERIFICATION
         );
 
-        if (!otpEntity.getOtpCode().equals(request.getOtpCode())) {
+        if (otpEntity == null || !otpEntity.getOtpCode().equals(request.getOtpCode())) {
             throw new OtpException("Invalid OTP.");
         }
 
@@ -72,6 +72,5 @@ public class OtpService {
         playerAuthRepository.save(playerAuth);
 
         otpRepository.delete(otpEntity);
-        return true;
     }
 }

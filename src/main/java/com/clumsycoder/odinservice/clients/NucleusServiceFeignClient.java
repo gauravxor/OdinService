@@ -1,5 +1,6 @@
 package com.clumsycoder.odinservice.clients;
 
+import com.clumsycoder.odinservice.config.NucleusServiceFeignConfig;
 import com.clumsycoder.odinservice.dto.Player;
 import com.clumsycoder.odinservice.dto.internal.CreatePlayerRequest;
 import com.clumsycoder.odinservice.dto.request.UpdateRequest;
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "nucleus-service", url = "http://localhost:9000")
-public interface NucleusServiceClient {
+@FeignClient(name = "nucleus-service", url = "http://localhost:9000", configuration = NucleusServiceFeignConfig.class)
+public interface NucleusServiceFeignClient {
 
     @GetMapping("/api/player/{id}")
     Player getPlayerById(@PathVariable("id") String id);

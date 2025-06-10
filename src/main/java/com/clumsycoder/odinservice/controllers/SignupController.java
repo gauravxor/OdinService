@@ -1,9 +1,9 @@
 package com.clumsycoder.odinservice.controllers;
 
+import com.clumsycoder.controlshift.commons.response.ApiResult;
 import com.clumsycoder.odinservice.dto.Player;
 import com.clumsycoder.odinservice.dto.request.SignupRequest;
 import com.clumsycoder.odinservice.services.SignupService;
-import com.clumsycoder.odinservice.services.exceptions.FeignExceptionHandler;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -25,9 +25,9 @@ public class SignupController {
     @PostMapping("")
     public ResponseEntity<ApiResponse> signup(@Valid @RequestBody SignupRequest request) {
         Player newPlayer = signupService.signUp(request);
-        ApiResponse response = new ApiResponse()
-                .message("Player created")
-                .data(Map.of("player", newPlayer));
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                new ApiResult().message("User created").data(Map.of("player", newPlayer)),
+                HttpStatus.CREATED
+        );
     }
 }
