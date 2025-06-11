@@ -2,7 +2,7 @@ package com.clumsycoder.odinservice.exception.nucleusservice;
 
 import com.clumsycoder.odinservice.constants.ErrorMessages;
 
-public class EmailAlreadyUsedException extends NucleusServiceException {
+public class EmailAlreadyUsedException extends NucleusValidationException {
 
     public EmailAlreadyUsedException() {
         super(ErrorMessages.EMAIL_ALREADY_USED);

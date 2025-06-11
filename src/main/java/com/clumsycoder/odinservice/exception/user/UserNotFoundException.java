@@ -1,8 +1,10 @@
-package com.clumsycoder.odinservice.exception.nucleusservice;
+package com.clumsycoder.odinservice.exception.user;
 
 import com.clumsycoder.odinservice.constants.ErrorMessages;
+import com.clumsycoder.odinservice.exception.base.OdinServiceException;
 
-public class UserNotFoundException extends UserException {
+public class UserNotFoundException extends OdinServiceException {
+
     public UserNotFoundException() {
         super(ErrorMessages.USER_NOT_FOUND);
     }

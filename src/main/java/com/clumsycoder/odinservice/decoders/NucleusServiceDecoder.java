@@ -1,13 +1,10 @@
 package com.clumsycoder.odinservice.decoders;
 
+import com.clumsycoder.controlshift.commons.nucleusservice.ErrorCode;
 import com.clumsycoder.odinservice.exception.nucleusservice.EmailAlreadyUsedException;
 import com.clumsycoder.odinservice.exception.nucleusservice.NucleusServiceException;
-import com.clumsycoder.controlshift.commons.nucleusservice.ErrorCode;
 import com.clumsycoder.odinservice.exception.nucleusservice.NucleusValidationException;
-import com.clumsycoder.odinservice.exception.nucleusservice.UserCreateFailedException;
-import com.clumsycoder.odinservice.exception.nucleusservice.UserDeleteFailedException;
 import com.clumsycoder.odinservice.exception.nucleusservice.UserNotFoundException;
-import com.clumsycoder.odinservice.exception.nucleusservice.UserUpdateFailedException;
 import com.clumsycoder.odinservice.exception.nucleusservice.UsernameAlreadyUsedException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,9 +64,6 @@ public class NucleusServiceDecoder implements ErrorDecoder {
                     case EMAIL_CONFLICT -> new EmailAlreadyUsedException();
                     case USERNAME_CONFLICT -> new UsernameAlreadyUsedException();
                     case USER_NOT_FOUND -> new UserNotFoundException();
-                    case USER_CREATE_FAILED -> new UserCreateFailedException();
-                    case USER_UPDATE_FAILED -> new UserUpdateFailedException();
-                    case USER_DELETE_FAILED -> new UserDeleteFailedException();
                     case VALIDATION_ERROR -> new NucleusValidationException();
                     case INTERNAL_ERROR -> new NucleusServiceException();
                 };

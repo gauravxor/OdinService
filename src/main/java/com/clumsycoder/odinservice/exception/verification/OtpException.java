@@ -1,10 +1,10 @@
-package com.clumsycoder.odinservice.exception;
+package com.clumsycoder.odinservice.exception.verification;
 
 import com.clumsycoder.odinservice.constants.ErrorMessages;
+import com.clumsycoder.odinservice.exception.base.OdinServiceException;
 
 public class OtpException extends OdinServiceException {
-
-    OtpException() {
+    public OtpException() {
         super(ErrorMessages.OTP_ERROR);
     }
 
