@@ -5,7 +5,11 @@ import com.clumsycoder.controlshift.commons.enums.OtpPurpose;
 import com.clumsycoder.controlshift.commons.enums.OtpType;
 import com.clumsycoder.controlshift.commons.generators.OtpGenerator;
 import com.clumsycoder.odinservice.dto.request.ValidateOtpRequest;
-import com.clumsycoder.odinservice.exception.OtpException;
+import com.clumsycoder.odinservice.exception.base.OdinServiceException;
+import com.clumsycoder.odinservice.exception.nucleusservice.UserNotFoundException;
+import com.clumsycoder.odinservice.exception.service.OtpServiceException;
+import com.clumsycoder.odinservice.exception.verification.OtpExpiredException;
+import com.clumsycoder.odinservice.exception.verification.OtpInvalidException;
 import com.clumsycoder.odinservice.models.OtpEntity;
 import com.clumsycoder.odinservice.models.PlayerAuth;
 import com.clumsycoder.odinservice.repositories.OtpRepository;
@@ -27,10 +31,17 @@ public class OtpService {
 
         PlayerAuth player = playerAuthRepository
                 .findByEmail(email)
-                .orElseThrow(() -> new OtpException("Player does not exist to save the OTP."));
+                .orElseThrow(UserNotFoundException::new);
 
         OtpEntity otpEntity = new OtpEntity();
-        String otpCode = OtpGenerator.generate(OtpType.ALPHANUMERIC);
+
+        String otpCode = null;
+        try {
+            otpCode = OtpGenerator.generate(OtpType.ALPHANUMERIC);
+        } catch (Exception e) {
+            throw new OtpServiceException(e);
+        }
+
         LocalDateTime currentTimeStamp = LocalDateTime.now();
 
         otpEntity.setOtpCode(otpCode);
@@ -39,7 +50,11 @@ public class OtpService {
         otpEntity.setCreatedAt(currentTimeStamp);
         otpEntity.setExpiresAt(currentTimeStamp.plusSeconds(otpPurpose.getExpirySeconds()));
 
-        otpRepository.save(otpEntity);
+        try {
+            otpRepository.save(otpEntity);
+        } catch (Exception e) {
+            throw new OtpServiceException("Failed to save the generated OTP");
+        }
 
         return otpCode;
     }
@@ -53,7 +68,7 @@ public class OtpService {
         try {
             emailService.sendVerificationOtp(email, generatedOtp);
         } catch (Exception e) {
-            throw new OtpException("Failed to send email OTP.");
+            throw new OtpServiceException("Failed to send OTP email.");
         }
     }
 
@@ -64,13 +79,21 @@ public class OtpService {
         );
 
         if (otpEntity == null || !otpEntity.getOtpCode().equals(request.getOtpCode())) {
-            throw new OtpException("Invalid OTP.");
+            throw new OtpInvalidException();
+        }
+
+        if (LocalDateTime.now().isAfter(otpEntity.getExpiresAt())) {
+            throw new OtpExpiredException();
         }
 
         PlayerAuth playerAuth = otpEntity.getPlayer();
         playerAuth.setIsEmailVerified(true);
-        playerAuthRepository.save(playerAuth);
 
-        otpRepository.delete(otpEntity);
+        try {
+            playerAuthRepository.save(playerAuth);
+            otpRepository.delete(otpEntity);
+        } catch (Exception e) {
+            throw new OdinServiceException("Failed to validate email", e);
+        }
     }
 }

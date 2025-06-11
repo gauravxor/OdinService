@@ -5,7 +5,7 @@ import com.clumsycoder.controlshift.commons.response.ApiResponse;
 import com.clumsycoder.controlshift.commons.response.ApiResult;
 import com.clumsycoder.odinservice.dto.request.GenerateOtpRequest;
 import com.clumsycoder.odinservice.dto.request.ValidateOtpRequest;
-import com.clumsycoder.odinservice.exception.OtpException;
+import com.clumsycoder.odinservice.exception.verification.OtpException;
 import com.clumsycoder.odinservice.services.OtpService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

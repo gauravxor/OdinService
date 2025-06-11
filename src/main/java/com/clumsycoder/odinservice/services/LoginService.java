@@ -3,7 +3,8 @@ package com.clumsycoder.odinservice.services;
 import com.clumsycoder.odinservice.clients.NucleusServiceFeignClient;
 import com.clumsycoder.odinservice.dto.Player;
 import com.clumsycoder.odinservice.dto.request.LoginRequest;
-import com.clumsycoder.odinservice.exception.OdinServiceException;
+import com.clumsycoder.odinservice.exception.auth.InvalidCredentialsException;
+import com.clumsycoder.odinservice.exception.user.UserNotFoundException;
 import com.clumsycoder.odinservice.models.PlayerAuth;
 import com.clumsycoder.odinservice.repositories.PlayerAuthRepository;
 import lombok.AllArgsConstructor;
@@ -20,12 +21,12 @@ public class LoginService {
     public Player login(LoginRequest request) {
         PlayerAuth playerAuth = playerAuthRepository
                 .findByEmail((request.getEmail()))
-                .orElseThrow(() -> new OdinServiceException("User does not exist."));
+                .orElseThrow(UserNotFoundException::new);
 
         String hashedPassword = playerAuth.getPasswordHash();
         String password = request.getPassword();
         if (!passwordEncoder.matches(password, hashedPassword)) {
-            throw new OdinServiceException("Invalid password provided.");
+            throw new InvalidCredentialsException();
         }
 
         return nucleusServiceFeignClient.getPlayerById(playerAuth.getPlayerId());

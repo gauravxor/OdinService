@@ -1,8 +1,8 @@
-package com.clumsycoder.odinservice.exception;
+package com.clumsycoder.odinservice.exception.auth;
 
 import com.clumsycoder.odinservice.constants.ErrorMessages;
 
-public class JwtException extends OdinServiceException {
+public class JwtException extends AuthenticationException {
     public JwtException() {
         super(ErrorMessages.JWT_ERROR);
     }

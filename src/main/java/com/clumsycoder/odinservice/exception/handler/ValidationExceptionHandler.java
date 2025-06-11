@@ -3,6 +3,7 @@ package com.clumsycoder.odinservice.exception.handler;
 import com.clumsycoder.controlshift.commons.odinservice.ErrorCode;
 import com.clumsycoder.controlshift.commons.response.ApiError;
 import com.clumsycoder.controlshift.commons.response.ApiResponse;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Order(1)
 public class ValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handleValidationExceptions(MethodArgumentNotValidException e) {
